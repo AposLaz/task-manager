@@ -1,0 +1,40 @@
+version: "3.5"
+
+services: 
+
+    app:
+        container_name: docker-node
+        hostname: docker-node
+        restart: always
+        build: .
+        command: nodemon /usr/src/app/index.js 
+        networks:
+            - default
+        ports:
+            - '3000:3000'
+        volumes:
+            - .:/usr/src/app
+        depends_on: 
+            - mongo
+      
+    mongo:
+        image: mongo:latest
+        container_name: mongo
+        hostname: mongo
+        #command: mongod --port 27018
+        networks:
+          - default
+        volumes: 
+          - data:/data/db
+        ports:
+          - "27017:27017"
+        expose:
+          - "27017"
+
+networks:
+    default:
+        driver: bridge
+
+
+volumes:
+    data: 
