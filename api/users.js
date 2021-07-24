@@ -39,7 +39,7 @@ router.get('/users/:id',(req,res)=>{
     })
 })
 
-router.patch('/users/:id',(req,res)=>{
+router.patch('/users/:id', async (req,res)=>{
 
     const id = req.params.id
     const update = req.body
@@ -55,16 +55,24 @@ router.patch('/users/:id',(req,res)=>{
         return res.status(400).send('Error: Invalid Updates')
     }
 
-    UserSchema.findOneAndUpdate({name: id},update, {projection: { _id: 0, __v: 0} , new: true, runValidators: true})
-    .then((user)=>{
-        if(!user){
-            return res.status(404).send("User "+id+" did not found")
-        }
-        res.status(200).send(user)
-    })
-    .catch((e)=>{
+    try{
+            const user = await UserSchema.findOne({name: id}).select({__v: 0 })
+            
+            myUpdates.forEach((value)=>{
+                user[value] = update[value]
+            })
+
+            await user.save()
+
+            if(!user){
+                return res.status(404).send("User "+id+" did not found")
+            }
+            res.status(200).send(user)
+
+    }
+    catch(e){
         res.status(400).send(e)
-    })
+    }
 })
 
 router.delete('/users/:id',(req,res)=>{

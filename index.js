@@ -23,3 +23,28 @@ app.listen(port,()=>{
     console.log('Server is up on port '+port)
 })
 
+
+
+const bcrypt = require('bcryptjs');
+
+const encrypt = async ()=>{
+    const password = 'aplaz'
+    const hash = await bcrypt.hash(password, 8)
+
+    //console.log(password)
+    return hash
+}
+
+const decrypt = async (hash)=>{
+    const pwd = await bcrypt.compareSync("aplaz", hash); // true
+    console.log(pwd)
+}
+
+encrypt()
+.then((data)=>{
+    console.log(data)
+    decrypt(data)
+})
+.catch((e)=>{
+    console.log("Error "+ e)
+})
