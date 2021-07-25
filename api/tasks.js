@@ -42,7 +42,7 @@ router.get('/tasks/:id',(req,res)=>{
 })
 
 
-router.patch('/tasks/:id',(req,res)=>{
+router.patch('/tasks/:id',async (req,res)=>{
 
     const id = req.params.id
     const update = req.body
@@ -58,17 +58,25 @@ router.patch('/tasks/:id',(req,res)=>{
         return res.status(400).send("Error: Invalid Updates")
     }
 
-    TaskSchema.findOneAndUpdate({description: id},update, {projection: {_id: 0, __v: 0}, new: true, runValidators: true})
-    .then((result)=>{
-        if(!result){
+    try{
+        task = await TaskSchema.findOne({description: id}).select({__v: 0})
+
+        keys_update.forEach((value)=>{
+            task[value] = update[value]
+        })
+
+        await task.save()
+
+        if(!task){
             return res.status(404).send("Task "+id+" does not exist")
         }
+        
+        res.status(200).send(task)
+    }
+    catch(e){
+        res.status(500).send(e)
+    }
 
-        res.status(200).send(result)
-    })
-    .catch((e)=>{
-        res.status(500).send(e.message)
-    })
 })
 
 router.delete('/tasks/:id',(req,res)=>{

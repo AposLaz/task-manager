@@ -1,6 +1,7 @@
 const express = require('express')
 const router = new express.Router()
 const UserSchema = require('../schema/v1/users')
+const validate = require('../validate/login')
 
 router.post('/users',(req,res)=>{
     const user = new UserSchema(req.body)
@@ -11,6 +12,19 @@ router.post('/users',(req,res)=>{
     .catch((e)=>{
         res.status(400).send('Error '+e)
     })
+})
+
+router.post('/users/login', async (req,res)=>{
+    const credentials = req.body
+    
+    try{
+        const result = await validate(credentials)
+        res.send(result)
+    }
+    catch(e){
+        res.status(500).send(""+e)
+    }
+    
 })
 
 router.get('/users', (req,res)=>{

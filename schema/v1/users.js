@@ -10,6 +10,7 @@ const UserSchema = new mongoose.Schema({
     },
     email: {
         type: String,
+        unique: true,
         required: true,
         trim: true,
         lowercase: true,
@@ -45,7 +46,7 @@ const UserSchema = new mongoose.Schema({
     }
 })
 
-//run code before user is saved
+//HASH password. run code before user is saved
 UserSchema.pre('save', async function(next) {
 
     if(!this.trial){

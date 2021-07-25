@@ -25,7 +25,7 @@ app.listen(port,()=>{
 
 
 
-const bcrypt = require('bcryptjs');
+/* const bcrypt = require('bcryptjs');
 
 const encrypt = async ()=>{
     const password = 'aplaz'
@@ -48,3 +48,4 @@ encrypt()
 .catch((e)=>{
     console.log("Error "+ e)
 })
+ */
