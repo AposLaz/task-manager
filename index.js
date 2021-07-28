@@ -23,8 +23,28 @@ app.listen(port,()=>{
     console.log('Server is up on port '+port)
 })
 
+//----------------------------------------------------- JWT
+/*
+const jwt = require('jsonwebtoken')
 
+const auth0 =  async ()=>{
+    const token = await jwt.sign({ _id: "abc"}, 'mypwd', { expiresIn: ''})
 
+    return token
+}
+
+auth0()
+.then((token)=>{
+
+    const validUser =  jwt.verify(token, 'mypwd')
+    console.log(validUser)
+})
+.catch((e)=>{
+    console.log(e)
+})
+*/
+
+//----------------------------------------------------- ENCRYPT - DECRYPT
 /* const bcrypt = require('bcryptjs');
 
 const encrypt = async ()=>{

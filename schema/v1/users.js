@@ -43,7 +43,13 @@ const UserSchema = new mongoose.Schema({
     date: {
         type: Date, 
         default: Date.now
-    }
+    },
+    tokens: [{
+        token: {
+            type: String,
+            required: true
+        }
+    }]
 })
 
 //HASH password. run code before user is saved

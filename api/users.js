@@ -2,12 +2,14 @@ const express = require('express')
 const router = new express.Router()
 const UserSchema = require('../schema/v1/users')
 const validate = require('../validate/login')
+const generateAuthToken = require('../validate/generateToken')
 
-router.post('/users',(req,res)=>{
+router.post('/users', async (req,res)=>{
     const user = new UserSchema(req.body)
     user.save()
-    .then((data)=>{
-        res.status(201).send('User is '+data)
+    .then(async (data)=>{
+        const token  = await generateAuthToken(user)
+        res.status(201).send({data, token})
     })
     .catch((e)=>{
         res.status(400).send('Error '+e)
@@ -15,11 +17,13 @@ router.post('/users',(req,res)=>{
 })
 
 router.post('/users/login', async (req,res)=>{
-    const credentials = req.body
-    
+    const credentials = req.body 
+
     try{
-        const result = await validate(credentials)
-        res.send(result)
+        const user = await validate(credentials)
+        const token = await generateAuthToken(user)
+
+        res.status(200).send({user, token})
     }
     catch(e){
         res.status(500).send(""+e)

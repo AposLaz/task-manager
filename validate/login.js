@@ -16,7 +16,7 @@ const login = async (credentials) =>{
     else{
 
         //find the user by email
-        const user = await UserSchema.findOne({email: credentials.email}).select({_id:0, __v: 0})
+        const user = await UserSchema.findOne({email: credentials.email}).select({ __v: 0})
         
         if(!user){
             throw new Error("The is not a user with this email")
