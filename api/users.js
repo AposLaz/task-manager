@@ -3,6 +3,8 @@ const router = new express.Router()
 const UserSchema = require('../schema/v1/users')
 const validate = require('../validate/login')
 const generateAuthToken = require('../validate/generateToken')
+const auth = require('../validate/auth')
+
 
 router.post('/users', async (req,res)=>{
     const user = new UserSchema(req.body)
@@ -31,14 +33,8 @@ router.post('/users/login', async (req,res)=>{
     
 })
 
-router.get('/users', (req,res)=>{
-    UserSchema.find({}).select({ _id: 0, __v: 0 })
-    .then((users)=>{
-        res.send(users)
-    })
-    .catch((e)=>{
-        res.status(500).send(e)
-    })
+router.get('/users/me', auth, (req,res)=>{
+    res.send(req.user)
 })
 
 router.get('/users/:id',(req,res)=>{
