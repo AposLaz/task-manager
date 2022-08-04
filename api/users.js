@@ -33,6 +33,31 @@ router.post('/users/login', async (req,res)=>{
     
 })
 
+router.post('/users/logout', auth, async (req, res)=>{
+    try{
+        //return tokens without the token that we want to delete
+        req.user.tokens = req.user.tokens.filter((token)=>{
+            return token.token !== req.token
+        })
+        //when we return tokens without the token that we want to delete save it
+        await req.user.save() 
+        res.status(200).send(req.user)
+    }
+    catch(e){
+        res.status(401).send('Error in Logout')
+    }
+})
+
+router.post('/users/logoutAll', auth, async (req,res)=>{
+    try{
+        req.user.tokens = []
+        await req.user.save()
+        res.send(req.user)
+    }catch(e){
+        res.status(500).send({Error: "Can not logout all users"})
+    }
+})
+
 router.get('/users/me', auth, (req,res)=>{
     res.send(req.user)
 })

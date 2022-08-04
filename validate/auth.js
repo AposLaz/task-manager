@@ -15,6 +15,7 @@ const auth = async(req, res, next)=>{
             throw new Error("Invalid authorization. User does not exists or do not have permissions.")
         }
 
+        req.token = bearer_token
         req.user = user
         next()
     }
