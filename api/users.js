@@ -1,34 +1,41 @@
 const express = require('express')
 const router = new express.Router()
-const UserSchema = require('../schema/v1/users')
-const validate = require('../validate/login')
-const generateAuthToken = require('../validate/generateToken')
+const UserSchema = require('../model/v1/users')
+const UserModel = require('../validate/login')
 const auth = require('../validate/auth')
 
 
 router.post('/users', async (req,res)=>{
     const user = new UserSchema(req.body)
-    user.save()
-    .then(async (data)=>{
-        const token  = await generateAuthToken(user)
-        res.status(201).send({data, token})
-    })
-    .catch((e)=>{
-        res.status(400).send('Error '+e)
-    })
+   
+    try{
+        await user.save()
+        .then(async (user_data)=>{
+            const token  = await user_data.generateAuthToken()
+            res.status(201).send({user_data, token})
+        })
+        .catch((e)=>{
+            res.status(400).send('Error '+e)
+        })
+    }
+    catch{
+        res.status(500).send('Error '+e)
+    }
+    
 })
 
 router.post('/users/login', async (req,res)=>{
     const credentials = req.body 
 
     try{
-        const user = await validate(credentials)
-        const token = await generateAuthToken(user)
-
+        const user = await UserSchema.Login_find_credentials(credentials)
+        
+        const token = await user.generateAuthToken()
+        
         res.status(200).send({user, token})
     }
     catch(e){
-        res.status(500).send(""+e)
+        res.status(500).send(e+'222')
     }
     
 })

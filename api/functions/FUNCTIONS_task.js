@@ -1,4 +1,4 @@
-const TaskSchema = require("../../schema/v1/tasks");
+const TaskSchema = require("../../model/v1/tasks");
 
 
 const validate_keys_request = (id,update_request_body,callback) =>{
@@ -15,7 +15,7 @@ const validate_keys_request = (id,update_request_body,callback) =>{
             CREATE TASK AND SAVE TO DATABASE
 */
 
-const create_task = async (task,callback)=>{
+const create_task = (task,callback)=>{
 
         //get schema
         const task_schema = new TaskSchema(task)
@@ -117,7 +117,7 @@ const delete_task_by_id = (id, callback)=>{
     })
     .catch((e)=>{
         callback('Something Gone wrong in DELETE_TASK_BY_ID '+e,500,undefined)
-    })
+    })  
 
 }
 

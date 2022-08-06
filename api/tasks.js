@@ -1,6 +1,6 @@
 const express = require('express')
 const router = new express.Router()
-const TaskSchema = require('../schema/v1/tasks')
+const TaskSchema = require('../model/v1/tasks')
 const CRUD = require('./functions/FUNCTIONS_task')
 
 /*
