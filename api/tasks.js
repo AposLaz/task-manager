@@ -1,99 +1,124 @@
 const express = require('express')
 const router = new express.Router()
 const TaskSchema = require('../schema/v1/tasks')
+const CRUD = require('./functions/FUNCTIONS_task')
+
+/*
+                POST API
+*/
 
 router.post('/tasks', (req,res)=>{
-    const task = new TaskSchema(req.body)
-
-    task.save()
-    .then((data)=>{
-        res.status(201).send('Task is '+ data)
-    })
-    .catch((e)=>{
-        res.status(400).send(e.message)
-    })
+    
+    try{
+        CRUD.create_task(req.body,(err,result) =>{
+            if(err){
+                res.status(400).send(err)
+            }
+            else{
+                res.status(201).send('Task is '+ result) 
+            }
+        })
+    }
+    catch{
+        res.status(500).send('Something gone Wrong in FUNCTION_task create_task')
+    }
+    
 })
+
+
+/*
+                GET API
+*/
 
 router.get('/tasks',(req,res)=>{
 
-    TaskSchema.find({}).select({ _id: 0, __v: 0 })
-    .then((tasks)=>{
-        res.status(200).send(tasks)
-    })
-    .catch((e)=>{
-        res.status(500).send(e)
-    })
+    try{
+        CRUD.get_all_tasks((err,tasks)=>{
+            if(err){
+                res.status(400).send(err)
+            }
+            else{
+                res.status(200).send(tasks)
+            }
+        })
+    }
+    catch{
+        res.status(500).send('Something gone wrong in function get_all_tasks')
+    }
+    
 })
+
 
 router.get('/tasks/:id',(req,res)=>{
 
-    const id = req.params.id
-
-    TaskSchema.findOne({description: id}).select({ _id: 0, __v: 0 })
-    .then((tasks)=>{
-        if(!tasks){
-            return res.status(404).send('Task did not found')
-        }
-        res.status(200).send(tasks)
-    })
-    .catch((e)=>{
-        res.status(500).send(e)
-    })
-})
-
-
-router.patch('/tasks/:id',async (req,res)=>{
-
-    const id = req.params.id
-    const update = req.body
-
-    const keys_update = Object.keys(update)
-    const AllowUpdates = ['description','completed']
-
-    const ValidateUpdatesOperation = keys_update.every((key)=>{
-        return AllowUpdates.includes(key)
-    })
-
-    if(!ValidateUpdatesOperation){
-        return res.status(400).send("Error: Invalid Updates")
-    }
-
     try{
-        task = await TaskSchema.findOne({description: id}).select({__v: 0})
+        const id = req.params.id
 
-        keys_update.forEach((value)=>{
-            task[value] = update[value]
-        })
-
-        await task.save()
-
-        if(!task){
-            return res.status(404).send("Task "+id+" does not exist")
-        }
+        CRUD.get_task_by_id(id,(err,task)=>{
         
-        res.status(200).send(task)
+            if(err){
+                res.status(404).send(err)
+            }else{
+                res.status(200).send(task)
+            }
+        })
     }
-    catch(e){
-        res.status(500).send(e)
+    catch{
+        res.status(500).send('Something gone wrong in function get_tasks_by_id')
     }
-
+    
 })
+
+
+/*
+                PATCH API
+*/
+
+router.patch('/tasks/:id', (req,res)=>{
+    
+    try{
+        const id = req.params.id
+        const update_request_body = req.body
+
+        CRUD.update_task_by_id(id,update_request_body,(err,status_code,Update_task)=>{
+            
+            if(err){
+                res.status(status_code).send(err)
+            }else{
+                res.status(status_code).send(Update_task)
+            }
+            
+        })
+    }
+    catch{
+        res.status(500).send('Something gone wrong in function update_task_by_id')
+    }   
+})
+
+
+/*
+                DELETE API
+*/
 
 router.delete('/tasks/:id',(req,res)=>{
 
     const id = req.params.id
     console.log(req.params.id)
+    try{
+        CRUD.delete_task_by_id(id,(err,status_code, deleted_task)=>{
+            if(err){
+                res.status(status_code).send(err)
+            }else{
+                res.status(status_code).send('Task with name : '+deleted_task.description +' deleted Succesfully')
+            }
+        })
+    }
+    catch{
+        res.status(500).send('Something gone wrong in function delete_task_by_id')
+    }
+    
 
-    TaskSchema.findOneAndDelete({description: id}).select({_id: 0, __v:0})
-    .then((data)=>{
-        if(!data){
-            return res.status(404).send("Invalid Task "+id)
-        }
-        res.status(200).send(data)
-    })
-    .catch((e)=>{
-        res.status(500).send(e)
-    })
+
 })
 
 
