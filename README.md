@@ -31,3 +31,4 @@ Help Users to see pending tasks. User and Tasks stored in a MongoDB. JWT Authent
 	1. Complete Role Usage (Admin, User).
 	2. JWT Refresh Tokens.
 	3. React.js GUI.
+	4. Swagger API.
