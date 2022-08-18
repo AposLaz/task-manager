@@ -3,7 +3,7 @@ const validator = require('validator')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
 const fs = require('fs')
-
+const TaskModel = require('./tasks')
 
 const UserSchema = new mongoose.Schema({
     name: {
@@ -55,20 +55,49 @@ const UserSchema = new mongoose.Schema({
     }]
 })
 
+//Set up relationship betwwen User and Tasks. Get Tasks that create a user
+
+UserSchema.virtual('tasks', {
+    ref: 'Task',
+    localField: '_id',      // PrimaryKey
+    foreignField: 'owner'   // foreignKey    
+})
+
+//Hide private data ==> password && tokens && __v
+
+UserSchema.methods.toJSON = function (){
+    try{
+        const user = this 
+        const userObject = user.toObject()
+
+        delete userObject.password
+        delete userObject.tokens
+        delete userObject.__v
+
+        return userObject
+    }
+    catch{
+        throw new Error('Something gone wrong in toJSON hide data')
+    }
+}
+
 //Generate Auth Token
 
 UserSchema.methods.generateAuthToken = async function(){ 
+    try{
+        const user = this
     
-    const user = this
-    
-    const cert = fs.readFileSync('public.pem')
-    const token = jwt.sign({_id : user._id.toString()}, cert.toString())
+        const cert = fs.readFileSync('public.pem')
+        const token = jwt.sign({_id : user._id.toString()}, cert.toString())
 
-    user.tokens = user.tokens.concat({token})
+        user.tokens = user.tokens.concat({token})
+        await user.save()
+        return token
+    }
+    catch{
+        throw new Error(`Something gone wrong in generate Token`)
+    }
     
-    await user.save()
-    
-    return token
 }
 
 
@@ -91,7 +120,7 @@ UserSchema.statics.Login_find_credentials = async (credentials) =>{
         const user = await UserModel.findOne({email: credentials.email}).select({ __v: 0})
         
         if(!user){
-            throw new Error("The is not a user with this email")
+            throw new Error("There is not a user with this email")
         }
 
         //check if password is correct
@@ -114,6 +143,15 @@ UserSchema.pre('save', async function(next) {
         }
     }    
 
+    next()
+})
+
+// DELETE user tasks when user is removed (CASCADE)
+UserSchema.pre('remove', async function (next){
+    const user = this
+
+    await TaskModel.deleteMany({ owner: user._id})
+    //delete all tasks that user has
     next()
 })
 

@@ -14,6 +14,11 @@ const TaskSchema = new mongoose.model('Task',{
     date : {
         type: Date, 
         default: Date.now
+    },
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User'         //const UserModel = mongoose.model('User' ****** This is the name that i need, UserSchema)
     }
 })
 
