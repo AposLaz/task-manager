@@ -1,4 +1,4 @@
-const TaskSchema = require("../../model/v1/tasks");
+const TaskSchema = require("../model/v1/tasks");
 
 
 const validate_keys_request = (id,update_request_body,callback) =>{

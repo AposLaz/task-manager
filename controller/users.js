@@ -2,7 +2,7 @@ const express = require('express')
 const router = new express.Router()
 const UserSchema = require('../model/v1/users')
 const auth = require('../middleware/auth')
-const CRUD = require('./functions/FUNCTION_users')
+const CRUD = require('../services/user_services')
 
 // ---------------------------------------------------------------------------------    SIMPLE USER FUNCTIONS
 

@@ -1,7 +1,7 @@
 const express = require('express')
 const connectDB = require('./db/mongoose')
-const userAPI = require('./api/users')
-const taskAPI = require('./api/tasks')
+const userAPI = require('./controller/users')
+const taskAPI = require('./controller/tasks')
 
 const port = process.env.PORT || 3000
 

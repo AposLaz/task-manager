@@ -2,7 +2,7 @@ const express = require('express')
 const router = new express.Router()
 const TaskSchema = require('../model/v1/tasks')
 const auth = require('../middleware/auth')
-const CRUD = require('./functions/FUNCTIONS_task')
+const CRUD = require('../services/task_services')
 
 /*
                 POST API
