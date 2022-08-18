@@ -1,7 +1,7 @@
 # task-manager
 
 Simple application for organize Tasks. Every task is declared as completed or non-completed. 
-This app help Users to see pending tasks. User and Tasks stored in a MongoDB. JWT Authentication.
+Help Users to see pending tasks. User and Tasks stored in a MongoDB. JWT Authentication.
 
 # To run the application 
 	
