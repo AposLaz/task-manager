@@ -165,7 +165,6 @@ router.delete('/tasks/me/:id',auth,(req,res)=>{
 router.delete('/tasks/:id',(req,res)=>{
 
     const id = req.params.id
-    console.log(req.params.id)
     try{
         CRUD.delete_task_by_id(id,(err,status_code, deleted_task)=>{
             if(err){

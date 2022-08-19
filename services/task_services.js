@@ -39,7 +39,7 @@ const create_task = (task,user,callback)=>{
 
 const get_all_my_tasks = async (user,callback)=>{
     try{
-        await user.populate('tasks').execPopulate() 
+        await user.populate('tasks')
         callback(undefined, 200, user.tasks)
     }
     catch(e){
