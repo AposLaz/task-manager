@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
 const fs = require('fs')
 const TaskModel = require('./tasks')
+require('dotenv').config()
 
 const UserSchema = new mongoose.Schema({
     name: {
@@ -87,8 +88,10 @@ UserSchema.methods.generateAuthToken = async function(){
     try{
         const user = this
     
-        const cert = fs.readFileSync('public.pem')
-        const token = jwt.sign({_id : user._id.toString()}, cert.toString())
+        // const cert = fs.readFileSync('public.pem')
+        const token = jwt.sign({_id : user._id.toString()}, process.env.JWT_TOKEN_SECRET,{
+            expiresIn: process.env.JWT_TOKEN_EXPIRES_IN
+        })
 
         user.tokens = user.tokens.concat({token})
         await user.save()

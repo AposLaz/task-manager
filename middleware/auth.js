@@ -1,13 +1,13 @@
 const jwt = require('jsonwebtoken')
 const UserSchema = require('../model/v1/users')
-const fs = require('fs')
+require('dotenv').config()
 
 const auth = async(req, res, next)=>{
 
     try{
         const bearer_token = req.header('Authorization').replace('Bearer ','')
-        const cert = fs.readFileSync('public.pem')
-        const decoded = jwt.verify(bearer_token, cert.toString())
+        // const cert = fs.readFileSync('public.pem')
+        const decoded = jwt.verify(bearer_token, process.env.JWT_TOKEN_SECRET)
         //console.log(decoded._id)
         const user = await UserSchema.findOne({_id: decoded._id, 'tokens.token': bearer_token})
         

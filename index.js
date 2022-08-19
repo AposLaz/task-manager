@@ -1,9 +1,10 @@
+require('dotenv').config()
 const express = require('express')
 const connectDB = require('./db/mongoose')
 const userAPI = require('./controller/users')
 const taskAPI = require('./controller/tasks')
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT
 
 
 connectDB((data)=>{
