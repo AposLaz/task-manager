@@ -7,13 +7,13 @@ services:
         hostname: docker-node
         restart: always
         build: .
-        command: nodemon /usr/src/app/index.js 
+        command: nodemon /usr/src/app/src/index.js 
         networks:
             - default
         ports:
             - '3000:3000'
         volumes:
-            - .:/usr/src/app
+            - .:/usr/src/app/
         depends_on: 
             - mongo
       
