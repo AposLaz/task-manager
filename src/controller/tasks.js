@@ -2,6 +2,7 @@ const express = require('express')
 const router = new express.Router()
 const TaskSchema = require('../model/v1/tasks')
 const auth = require('../middleware/auth')
+const roleAuth = require('../middleware/roleAuth')
 const CRUD = require('../services/task_services')
 
 /*
@@ -47,7 +48,7 @@ router.get('/tasks/me', auth, (req,res)=>{
                 GET API ADMIN FUNCTIONS
 */
 
-router.get('/tasks',(req,res)=>{
+router.get('/tasks',[auth,roleAuth],(req,res)=>{
 
     try{
         CRUD.get_all_tasks((err,tasks)=>{
@@ -66,7 +67,7 @@ router.get('/tasks',(req,res)=>{
 })
 
 
-router.get('/tasks/:id',auth,(req,res)=>{
+router.get('/tasks/:id',[auth,roleAuth],(req,res)=>{
 
     try{
         const id = req.params.id
@@ -115,7 +116,7 @@ router.patch('/tasks/me/:id', auth, (req,res)=>{
 
 //------------------------------------------------------------------------------------------- UPDATE ALL TASKS --(ADMIN FUNCTION)
 
-router.patch('/tasks/:id', (req,res)=>{
+router.patch('/tasks/:id', [auth,roleAuth],(req,res)=>{
     
     try{
         const id = req.params.id
@@ -162,7 +163,7 @@ router.delete('/tasks/me/:id',auth,(req,res)=>{
 
 //----------------------------------------------------------------------------------------------------ADMIN FUNCTION
 
-router.delete('/tasks/:id',(req,res)=>{
+router.delete('/tasks/:id',[auth,roleAuth],(req,res)=>{
 
     const id = req.params.id
     try{

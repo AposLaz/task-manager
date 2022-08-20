@@ -1,4 +1,4 @@
-const UserSchema = require('../model/v1/users')
+const UserSchema = require('../model/v2/users')
 
 
 /*

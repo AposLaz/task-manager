@@ -1,7 +1,8 @@
 const express = require('express')
 const router = new express.Router()
-const UserSchema = require('../model/v1/users')
+const UserSchema = require('../model/v2/users')
 const auth = require('../middleware/auth')
+const roleAuth = require('../middleware/roleAuth')
 const CRUD = require('../services/user_services')
 
 // ---------------------------------------------------------------------------------    SIMPLE USER FUNCTIONS
@@ -146,7 +147,7 @@ router.delete('/users/me',auth,(req,res)=>{
 
 // ---------------------------------------------------------------------------------    ADMIN FUNCTIONS
 
-router.get('/users/:id',(req,res)=>{
+router.get('/users/:id', [auth, roleAuth],(req,res)=>{
 
 
     const id = req.params.id
@@ -167,7 +168,7 @@ router.get('/users/:id',(req,res)=>{
     
 })
 
-router.patch('/users/:id', async (req,res)=>{
+router.patch('/users/:id', [auth, roleAuth], async (req,res)=>{
 
     const id = req.params.id
     const update = req.body
@@ -204,7 +205,7 @@ router.patch('/users/:id', async (req,res)=>{
         DELETE OTHER USERS PROFILE
 */ 
 
-router.delete('/users/:id',(req,res)=>{
+router.delete('/users/:id',[auth, roleAuth],(req,res)=>{
     
     const id = req.params.id
     
