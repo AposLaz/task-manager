@@ -57,6 +57,9 @@ const UserSchema = new mongoose.Schema({
         token: {
             type: String,
             required: true
+        },
+        refreshToken: {
+            type: String
         }
     }]
 })
@@ -93,17 +96,17 @@ UserSchema.methods.generateAuthToken = async function(){
     try{
         const user = this
     
-        // const cert = fs.readFileSync('public.pem')
         const token = jwt.sign({_id : user._id.toString()}, process.env.JWT_TOKEN_SECRET,{
             expiresIn: process.env.JWT_TOKEN_EXPIRES_IN
         })
 
         user.tokens = user.tokens.concat({token})
+        
         await user.save()
         return token
     }
-    catch{
-        throw new Error(`Something gone wrong in generate Token`)
+    catch(e){
+        throw new Error(`Something gone wrong in generate Token `+e.message)
     }
     
 }
