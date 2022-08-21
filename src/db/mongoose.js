@@ -1,9 +1,10 @@
 const mongoose = require('mongoose')
+require('dotenv').config()
 
 //task-manager-api is our databse
 
 const connectDB = (callback)=>{
-    mongoose.connect('mongodb://mongo:27017/task-manager-api', {
+    mongoose.connect(process.env.MONGODB_URL, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     })
