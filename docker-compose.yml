@@ -7,7 +7,7 @@ services:
         hostname: docker-node
         restart: always
         build: .
-        command: nodemon /usr/src/app/src/index.js 
+        command: env-cmd /usr/src/app/config/dev.env nodemon /usr/src/app/src/index.js 
         networks:
             - default
         ports:

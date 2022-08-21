@@ -6,15 +6,22 @@ const UserSchema = require('../model/v2/users')
 */
 
 const sign_up_user = async (new_user,callback)=>{
-    const user = new UserSchema(new_user)
-    await user.save()
-        .then(async (user_data)=>{
-            const token  = await user_data.generateAuthToken()
-            callback(undefined,201,user_data, token)
-    })
-    .catch((e)=>{
-            callback(e.message, 400, undefined,undefined)
-    })
+    
+    try{
+        const user = new UserSchema(new_user)
+        await user.save()
+            .then(async (user_data)=>{
+                const token  = await user_data.generateAuthToken()
+                callback(undefined,201,user_data, token)
+        })
+        .catch((e)=>{
+                callback(e.message, 400, undefined,undefined)
+        })
+    }
+    catch(e){
+        callback(e.message, 400, undefined,undefined)
+    }
+    
 } 
 
 
