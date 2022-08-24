@@ -79,6 +79,20 @@ const logout_all_tokens = async (user,callback)=>{
 }
 
 /*
+        GET ALL USERS
+*/
+
+const getAllUsers = async (req,res)=>{
+    try{
+        const users=  await UserSchema.find().exec()
+        res.status(200).send(users)
+    }
+    catch(e){
+        res.status(500).send({Error: e.message})
+    }
+}
+
+/*
         GET USER
 */
 
@@ -184,5 +198,6 @@ module.exports = {
     update_user,
     delete_user_admin_function,
     get_user_by_name_admin_function,
-    update_user_by_name_admin_function
+    update_user_by_name_admin_function,
+    getAllUsers
 }

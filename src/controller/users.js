@@ -152,6 +152,8 @@ router.delete('/users/me',auth,(req,res)=>{
 
 // ---------------------------------------------------------------------------------    ADMIN FUNCTIONS
 
+router.get('/users', [auth, roleAuth], CRUD.getAllUsers)
+
 router.get('/users/:id', [auth, roleAuth],(req,res)=>{
 
 
