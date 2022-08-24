@@ -1,13 +1,12 @@
 const express = require('express')
 const router = new express.Router()
-const UserSchema = require('../model/v2/users')
 const auth = require('../middleware/auth')
 const roleAuth = require('../middleware/roleAuth')
 const CRUD = require('../services/user_services')
 
 // ---------------------------------------------------------------------------------    SIMPLE USER FUNCTIONS
 
-router.post('/users', async (req,res)=>{
+router.post('/users', (req,res)=>{
     try{
          CRUD.sign_up_user(req.body,(err,status_code,user_data,token)=>{
             if(err){
@@ -19,13 +18,13 @@ router.post('/users', async (req,res)=>{
         })
     }
     catch{
-        res.status(500).send('Error '+err)
+        res.status(500).send('Error '+err.message)
     }
 })
 
-router.post('/users/login', async (req,res)=>{
+router.post('/users/login', (req,res)=>{
     try{
-        CRUD.login_user(req.body,(err,status_code,user,token)=>{
+     CRUD.login_user(req.body,(err,status_code,user,token)=>{
             if(err){
                 console.log(err)
                 res.status(status_code).send(err)
@@ -36,7 +35,7 @@ router.post('/users/login', async (req,res)=>{
         })
     }
     catch(err){
-        res.status(500).send(err)
+        res.status(500).send(err.message)
     }
 
     
@@ -80,8 +79,14 @@ router.post('/users/logoutAll', auth, async (req,res)=>{
     }
 })
 
-router.get('/users/me', auth, (req,res)=>{
-    res.send(req.user)
+router.get('/users/me', auth, async (req,res)=>{
+    try{
+        res.status(200).send(req.user)
+    }catch(e)
+    {
+        res.status(500).send({Error: e.message})
+    }
+    
 })
 
 
