@@ -63,6 +63,23 @@ test('Should Not Delete My Account for UnAuthorize User', async ()=>{
             .expect(401)
 })
 
+test('Get All users only from Admin', async()=>{
+    await request(app)
+            .get('/users')
+            .set('Authorization', `Bearer ${AdminUser.tokens[0].token}`)
+            .send()
+            expect(200)
+})
+
+test('Should not Get All Users if User is not admin', async ()=>{
+    await request(app)
+            .get('/users')
+            .set('Authorization', `Bearer ${SimpleUser.tokens[0].token}`)
+            .send()
+            .expect(401)
+})
+
+
 
 
 
