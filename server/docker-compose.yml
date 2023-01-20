@@ -2,9 +2,9 @@ version: "3.5"
 
 services: 
 
-    app:
-        container_name: docker-node
-        hostname: docker-node
+    server-node:
+        container_name: server-node
+        hostname: server-node
         restart: always
         build: .
         command: env-cmd /usr/src/app/config/dev.env nodemon /usr/src/app/src/index.js 
