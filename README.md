@@ -8,6 +8,8 @@ Task manager application for planning, organize and track your tasks.
 * Express
 * MongoDB
 * Jest
+* React.JS
+* Redux
 
 ## Getting Started 
 
@@ -20,10 +22,27 @@ Task manager application for planning, organize and track your tasks.
 	# Remove current origin repo
 	$ git remote remove origin  
 ```
-2. Start Application using Docker :whale2: https://www.docker.com/
+2. Install Dependencies (npm packages)
 
+	```bash
+	# Server npm packages
+	$ cd server
+	$ npm install
+
+	# Client npm packages
+	$ cd client
+	$ npm install
 	```
-	docker-compose up
+
+3. Start Application using Docker :whale2: https://www.docker.com/
+
+	```bash
+	# Start Server
+	$ cd server
+	$ docker-compose up -d
+
+	# Start Client
+	in progress .......
 	```
 
 ## API 
