@@ -1,0 +1,19 @@
+@import url('main.css');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+
+html {
+  font-family: var(--font-family-Helvetica);
+  font-size: 1rem;
+  overflow-x: hidden;
+  overflow-y: scroll;
+
+  background: var(--bg-grey);
+}
+

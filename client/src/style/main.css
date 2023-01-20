@@ -1,0 +1,19 @@
+/**
+    Here we declare colors and fonts
+*/
+
+:root{
+    /* background colors */
+
+    --bg-grey: rgb(226, 226, 226);
+    --bg-black: #000;
+    
+    /* box-shadow */
+  
+    --box-shadow-full: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;;
+  
+    /* fonts */
+    --font-family-Helvetica: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    --font-family-Opes-Sans: "Open Sans", Arial, sans-serif;
+    --font-family-sans-serif: Poppins, sans-serif;
+  }

@@ -7,5 +7,5 @@ RUN npm install -g nodemon
 RUN npm install -g env-cmd@8.0.2 --save-dev
 RUN npm install 
 COPY . .
-EXPOSE 3000
+EXPOSE 4000
 CMD ["npm","start"]
